@@ -1,0 +1,13 @@
+# Claude Code (config local del entorno, no del proyecto)
+.claude/
+
+# Editores / IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
