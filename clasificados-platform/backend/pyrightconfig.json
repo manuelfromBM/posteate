@@ -1,0 +1,17 @@
+{
+  "venvPath": ".",
+  "venv": ".venv",
+  "include": [
+    "core",
+    "usuarios",
+    "ubicaciones",
+    "categorias",
+    "publicaciones"
+  ],
+  "exclude": [
+    "**/migrations",
+    "**/__pycache__",
+    ".venv"
+  ],
+  "typeCheckingMode": "basic"
+}
