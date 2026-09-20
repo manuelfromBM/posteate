@@ -1,4 +1,4 @@
-# Clasificados Platform
+# Clasificados Platform/Posteate
 
 Plataforma de clasificados e información local — un "centro digital" para una ciudad,
 partiendo por Melipilla, Chile, con miras a expandirse a otras comunas. Permite publicar
@@ -80,3 +80,35 @@ El sitio queda disponible en `http://localhost:3000`.
 
 - `backend/.env.example` → copiar a `backend/.env` y ajustar según sea necesario.
 - `frontend/.env.local.example` → copiar a `frontend/.env.local` y ajustar según sea necesario.
+
+
+# Posteate — Claude Code configuration
+
+Copy the contents of this package into the root of the Posteate repository.
+
+Expected result:
+
+```text
+posteate/
+├── CLAUDE.md
+├── .claude/
+│   ├── agents/
+│   ├── skills/
+│   └── settings.json
+└── docs/
+    ├── product/
+    └── technical/
+```
+
+The configuration intentionally leaves several decisions as TBD:
+authentication, object storage, deployment, CI/CD, API type generation and some MVP policies.
+
+After copying the files, start Claude Code from the repository root and verify the configuration with:
+
+- `/memory`
+- `/agents`
+- `/skills`
+- `/permissions`
+- `/doctor`
+
+Do not commit `.claude/settings.local.json` if Claude Code creates it; it is intended for local/personal overrides.
