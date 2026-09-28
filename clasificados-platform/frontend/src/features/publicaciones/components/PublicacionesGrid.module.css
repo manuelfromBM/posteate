@@ -3,3 +3,8 @@
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 1.25rem;
 }
+
+.vacio {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}

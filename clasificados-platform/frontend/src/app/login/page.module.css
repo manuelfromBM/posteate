@@ -9,3 +9,16 @@
 .title {
   font-size: var(--font-size-2xl);
 }
+
+.successBanner {
+  width: 100%;
+  max-width: 360px;
+  margin: -0.5rem 0 0;
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius);
+  background: #ecfdf3;
+  border: 1px solid #abefc6;
+  color: #067647;
+  font-size: var(--font-size-sm);
+  text-align: center;
+}

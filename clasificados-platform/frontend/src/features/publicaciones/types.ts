@@ -49,3 +49,19 @@ export interface PublicacionesFiltros {
   precio_max?: number;
   page?: number;
 }
+
+export interface PublicacionConCategoria {
+  publicacion: Publicacion;
+  categoriaSlug: string;
+}
+
+export interface NuevaPublicacionInput {
+  titulo: string;
+  descripcion: string;
+  categoria: number;
+  subcategoria?: number | null;
+  precio?: string | null;
+  estado: EstadoPublicacion;
+  ubicacion: number;
+  contacto: string;
+}

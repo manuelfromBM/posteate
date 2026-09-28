@@ -1,14 +1,16 @@
-import type { PublicacionRecienteMock } from "../mocks";
+import type { PublicacionConCategoria } from "../types";
 import { PublicacionCard } from "./PublicacionCard";
 import styles from "./PublicacionesGrid.module.css";
 
 export function PublicacionesGrid({
   publicaciones,
+  mensajeVacio = "No hay publicaciones para mostrar.",
 }: {
-  publicaciones: PublicacionRecienteMock[];
+  publicaciones: PublicacionConCategoria[];
+  mensajeVacio?: string;
 }) {
   if (publicaciones.length === 0) {
-    return <p>No hay publicaciones para mostrar.</p>;
+    return <p className={styles.vacio}>{mensajeVacio}</p>;
   }
 
   return (

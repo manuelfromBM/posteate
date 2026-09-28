@@ -13,3 +13,10 @@ export interface Categoria {
   orden: number;
   subcategorias: Subcategoria[];
 }
+
+export interface CategoriasResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Categoria[];
+}

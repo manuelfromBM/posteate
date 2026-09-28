@@ -37,6 +37,12 @@ export default function RootLayout({
               </Link>
               <div className={styles.headerRight}>
                 <span className={styles.ubicacion}>📍 Melipilla, Chile</span>
+                <Link href="/buscar" className={styles.buscar}>
+                  🔍 Buscar
+                </Link>
+                <Link href="/registro" className={styles.registro}>
+                  Crear cuenta
+                </Link>
                 <Link href="/login" className={styles.login}>
                   Ingresar
                 </Link>

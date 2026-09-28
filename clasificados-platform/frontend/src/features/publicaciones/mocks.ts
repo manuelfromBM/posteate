@@ -1,9 +1,6 @@
-import { EstadoPublicacion, type Publicacion } from "./types";
+import { EstadoPublicacion, type PublicacionConCategoria } from "./types";
 
-export interface PublicacionRecienteMock {
-  publicacion: Publicacion;
-  categoriaSlug: string;
-}
+export type PublicacionRecienteMock = PublicacionConCategoria;
 
 export const publicacionesRecientesMock: PublicacionRecienteMock[] = [
   {
@@ -52,50 +49,50 @@ export const publicacionesRecientesMock: PublicacionRecienteMock[] = [
       imagenes: [],
     },
   },
-  {
-    categoriaSlug: "empleos",
-    publicacion: {
-      id: 3,
-      titulo: "Se busca ayudante de bodega",
-      slug: "se-busca-ayudante-de-bodega",
-      descripcion: "Jornada completa, experiencia no excluyente.",
-      categoria: 5,
-      categoria_nombre: "Empleos",
-      subcategoria: null,
-      subcategoria_nombre: null,
-      precio: null,
-      estado: EstadoPublicacion.Disponible,
-      ubicacion: 2,
-      ubicacion_nombre: "San Manuel",
-      usuario: 3,
-      usuario_nombre: "distribuidora-mp",
-      fecha_publicacion: "2026-09-17T16:45:00Z",
-      fecha_expiracion: null,
-      contacto: "+56 9 8765 4321",
-      imagenes: [],
-    },
-  },
-  {
-    categoriaSlug: "perdidos-y-encontrados",
-    publicacion: {
-      id: 4,
-      titulo: "Se perdió gato color negro sector Las Palmas",
-      slug: "se-perdio-gato-color-negro-sector-las-palmas",
-      descripcion: "Responde al nombre de Michi, es muy tímido.",
-      categoria: 8,
-      categoria_nombre: "Perdidos y encontrados",
-      subcategoria: null,
-      subcategoria_nombre: null,
-      precio: null,
-      estado: EstadoPublicacion.Disponible,
-      ubicacion: 3,
-      ubicacion_nombre: "Las Palmas",
-      usuario: 4,
-      usuario_nombre: "valentina",
-      fecha_publicacion: "2026-09-17T08:15:00Z",
-      fecha_expiracion: null,
-      contacto: "+56 9 2222 3333",
-      imagenes: [],
-    },
-  },
+  // {
+  //   categoriaSlug: "empleos",
+  //   publicacion: {
+  //     id: 3,
+  //     titulo: "Se busca ayudante de bodega",
+  //     slug: "se-busca-ayudante-de-bodega",
+  //     descripcion: "Jornada completa, experiencia no excluyente.",
+  //     categoria: 5,
+  //     categoria_nombre: "Empleos",
+  //     subcategoria: null,
+  //     subcategoria_nombre: null,
+  //     precio: null,
+  //     estado: EstadoPublicacion.Disponible,
+  //     ubicacion: 2,
+  //     ubicacion_nombre: "San Manuel",
+  //     usuario: 3,
+  //     usuario_nombre: "distribuidora-mp",
+  //     fecha_publicacion: "2026-09-17T16:45:00Z",
+  //     fecha_expiracion: null,
+  //     contacto: "+56 9 8765 4321",
+  //     imagenes: [],
+  //   },
+  // },
+  // {
+  //   categoriaSlug: "perdidos-y-encontrados",
+  //   publicacion: {
+  //     id: 4,
+  //     titulo: "Se perdió gato color negro sector Las Palmas",
+  //     slug: "se-perdio-gato-color-negro-sector-las-palmas",
+  //     descripcion: "Responde al nombre de Michi, es muy tímido.",
+  //     categoria: 8,
+  //     categoria_nombre: "Perdidos y encontrados",
+  //     subcategoria: null,
+  //     subcategoria_nombre: null,
+  //     precio: null,
+  //     estado: EstadoPublicacion.Disponible,
+  //     ubicacion: 3,
+  //     ubicacion_nombre: "Las Palmas",
+  //     usuario: 4,
+  //     usuario_nombre: "valentina",
+  //     fecha_publicacion: "2026-09-17T08:15:00Z",
+  //     fecha_expiracion: null,
+  //     contacto: "+56 9 2222 3333",
+  //     imagenes: [],
+  //   },
+  // },
 ];

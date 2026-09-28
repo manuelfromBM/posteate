@@ -34,22 +34,57 @@
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .ubicacion {
+  display: none;
   font-size: var(--font-size-sm);
   color: var(--color-text-muted);
+}
+
+@media (min-width: 640px) {
+  .ubicacion {
+    display: inline;
+  }
+}
+
+.buscar {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-decoration: none;
+}
+
+.buscar:hover {
+  color: var(--color-text);
+}
+
+.registro {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.registro:hover {
+  color: var(--color-primary-hover);
 }
 
 .login {
   font-size: var(--font-size-sm);
   font-weight: 600;
-  color: var(--color-primary);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius);
+  background: var(--color-primary);
+  color: #fff;
   text-decoration: none;
+  transition: background 0.15s ease;
 }
 
 .login:hover {
-  color: var(--color-primary-hover);
+  background: var(--color-primary-hover);
 }
 
 .main {
