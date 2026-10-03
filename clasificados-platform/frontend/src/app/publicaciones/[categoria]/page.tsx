@@ -1,9 +1,7 @@
 "use client";
 
-import Link from "next/link";
 import { use } from "react";
-
-import { usePublicaciones } from "@/features/publicaciones/hooks/usePublicaciones";
+import { PublicacionesRecientes } from "@/features/publicaciones";
 
 export default function PublicacionesPorCategoriaPage({
   params,
@@ -11,25 +9,21 @@ export default function PublicacionesPorCategoriaPage({
   params: Promise<{ categoria: string }>;
 }) {
   const { categoria } = use(params);
-  const { data, isLoading, isError } = usePublicaciones({ categoria });
 
-  if (isLoading) return <p>Cargando publicaciones...</p>;
-  if (isError) return <p>Ocurrió un error al cargar las publicaciones.</p>;
+  // Capitalizamos estéticamente el título de la categoría
+  const tituloCategoria = categoria.charAt(0).toUpperCase() + categoria.slice(1);
 
   return (
-    <main>
-      <h1>Publicaciones: {categoria}</h1>
-      <ul>
-        {data?.results.map((publicacion) => (
-          <li key={publicacion.id}>
-            <Link href={`/publicaciones/${categoria}/${publicacion.slug}`}>
-              {publicacion.titulo}
-            </Link>
-            {publicacion.precio && <span> — ${publicacion.precio}</span>}
-            <span> ({publicacion.estado})</span>
-          </li>
-        ))}
-      </ul>
+    <main style={{ padding: "2rem", maxWidth: "1200px", margin: "0 auto" }}>
+      <header style={{ marginBottom: "2rem" }}>
+        <h1 style={{ fontSize: "2rem", fontWeight: "bold" }}>
+          📍 {tituloCategoria} en Melipilla
+        </h1>
+        <p style={{ color: "#666" }}>Filtrado por la categoría seleccionada</p>
+      </header>
+
+      {/* 🚀 Reutilizamos tu orquestador pasándole la categoría como filtro */}
+      <PublicacionesRecientes categoria={categoria} />
     </main>
   );
 }

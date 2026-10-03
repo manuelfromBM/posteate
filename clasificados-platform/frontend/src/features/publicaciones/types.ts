@@ -1,8 +1,8 @@
 export enum EstadoPublicacion {
-  Disponible = "disponible",
-  Vendido = "vendido",
-  Arrendado = "arrendado",
-  Finalizado = "finalizado",
+  Activo = "activo",
+  Pausado = "pausado",
+  Resuelto = "resuelto",
+  Expirado = "expirado",
 }
 
 export interface ImagenPublicacion {
@@ -12,18 +12,20 @@ export interface ImagenPublicacion {
 }
 
 export interface Publicacion {
-  id: number;
+  id: string; 
   titulo: string;
   slug: string;
   descripcion: string;
   categoria: number;
   categoria_nombre: string;
+  categoria_slug: string; 
   subcategoria: number | null;
   subcategoria_nombre: string | null;
   precio: string | null;
+  recompensa: string | null;
   estado: EstadoPublicacion;
   ubicacion: number;
-  ubicacion_nombre: string;
+  ubicacion_nombre: string; 
   usuario: number;
   usuario_nombre: string;
   fecha_publicacion: string;

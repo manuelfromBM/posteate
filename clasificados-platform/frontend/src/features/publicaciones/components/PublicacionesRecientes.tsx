@@ -1,19 +1,27 @@
 "use client";
 
-import { usePublicacion } from "../hooks/usePublicacion";
-import { publicacionesRecientesMock } from "../mocks";
+import { usePublicaciones } from "../hooks/usePublicaciones";
 import { PublicacionesGrid } from "./PublicacionesGrid";
 
-const SLUG_CONECTADO_AL_BACKEND = "se-busca-ayudante-de-bodega";
+interface PublicacionesRecientesProps {
+  categoria?: string; // Opcional, por si reutilizas este componente en las páginas filtradas
+}
 
-export function PublicacionesRecientes() {
-  const { data: publicacionReal } = usePublicacion(SLUG_CONECTADO_AL_BACKEND);
+export function PublicacionesRecientes({ categoria }: PublicacionesRecientesProps) {
+  // Traemos las publicaciones reales de la BD a través de nuestro hook
+  const { data: publicaciones, isPending, isError, error } = usePublicaciones({ categoria });
 
-  const publicaciones = publicacionesRecientesMock.map((item) =>
-    item.publicacion.slug === SLUG_CONECTADO_AL_BACKEND && publicacionReal
-      ? { ...item, publicacion: publicacionReal }
-      : item
-  );
+  if (isPending) {
+    return <p className="text-center p-4">Cargando publicaciones de Melipilla...</p>;
+  }
+
+  if (isError) {
+    return (
+      <p className="text-center p-4 text-red-500">
+        Error al conectar con el servidor: {error instanceof Error ? error.message : "Error desconocido"}
+      </p>
+    );
+  }
 
   return <PublicacionesGrid publicaciones={publicaciones} />;
 }

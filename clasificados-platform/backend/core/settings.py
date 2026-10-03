@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "ubicaciones",
     "categorias",
     "publicaciones",
+    "django_extensions",
 ]
 
 MIDDLEWARE = [

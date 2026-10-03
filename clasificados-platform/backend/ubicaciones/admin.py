@@ -1,18 +1,19 @@
 from django.contrib import admin
+from .models import Region, Comuna, Sector 
 
-from .models import Ciudad, Comuna
-
-
-@admin.register(Ciudad)
-class CiudadAdmin(admin.ModelAdmin):
-    list_display = ["nombre", "region", "slug"]
+@admin.register(Region)
+class RegionAdmin(admin.ModelAdmin):
+    list_display = ("nombre", "numero_romano")
     prepopulated_fields = {"slug": ("nombre",)}
-    search_fields = ["nombre", "region"]
-
 
 @admin.register(Comuna)
 class ComunaAdmin(admin.ModelAdmin):
-    list_display = ["nombre", "ciudad", "slug"]
-    list_filter = ["ciudad"]
+    list_display = ("nombre", "region")
+    list_filter = ("region",)
     prepopulated_fields = {"slug": ("nombre",)}
-    search_fields = ["nombre"]
+
+@admin.register(Sector)
+class SectorAdmin(admin.ModelAdmin):
+    list_display = ("nombre", "comuna")
+    list_filter = ("comuna__region", "comuna")
+    prepopulated_fields = {"slug": ("nombre",)}

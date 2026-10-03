@@ -12,10 +12,13 @@ class ImagenPublicacionSerializer(serializers.ModelSerializer):
 class PublicacionSerializer(serializers.ModelSerializer):
     imagenes = ImagenPublicacionSerializer(many=True, read_only=True)
     categoria_nombre = serializers.CharField(source="categoria.nombre", read_only=True)
+    categoria_slug = serializers.CharField(source="categoria.slug", read_only=True)
     subcategoria_nombre = serializers.CharField(
         source="subcategoria.nombre", read_only=True, default=None
     )
-    ubicacion_nombre = serializers.CharField(source="ubicacion.nombre", read_only=True)
+    
+    # 🇨🇱 CORRECCIÓN 1: Cambiamos 'ubicacion.nombre' por 'comuna.nombre' (o 'sector.nombre')
+    ubicacion_nombre = serializers.CharField(source="comuna.nombre", read_only=True)
     usuario_nombre = serializers.CharField(source="usuario.username", read_only=True)
 
     class Meta:
@@ -27,11 +30,13 @@ class PublicacionSerializer(serializers.ModelSerializer):
             "descripcion",
             "categoria",
             "categoria_nombre",
+            "categoria_slug",
             "subcategoria",
             "subcategoria_nombre",
             "precio",
+            "recompensa",
             "estado",
-            "ubicacion",
+            "comuna", 
             "ubicacion_nombre",
             "usuario",
             "usuario_nombre",

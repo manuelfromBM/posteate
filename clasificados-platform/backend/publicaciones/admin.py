@@ -16,12 +16,13 @@ class PublicacionAdmin(admin.ModelAdmin):
         "subcategoria",
         "estado",
         "precio",
-        "ubicacion",
+        "comuna",     
+        "sector",     
         "usuario",
         "fecha_publicacion",
         "fecha_expiracion",
     ]
-    list_filter = ["estado", "categoria", "subcategoria", "ubicacion"]
+    list_filter = ["estado", "categoria", "subcategoria", "comuna", "sector"] 
     search_fields = ["titulo", "descripcion"]
     prepopulated_fields = {"slug": ("titulo",)}
     inlines = [ImagenPublicacionInline]

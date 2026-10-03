@@ -7,10 +7,12 @@ requires-python = ">=3.13"
 dependencies = [
     "django>=6.0.7",
     "django-cors-headers>=4.9.0",
+    "django-extensions>=4.1",
     "django-filter>=25.2",
     "djangorestframework>=3.17.1",
     "pillow>=12.3.0",
     "psycopg[binary]>=3.3.4",
+    "pydot>=4.0.1",
     "python-decouple>=3.8",
 ]
 

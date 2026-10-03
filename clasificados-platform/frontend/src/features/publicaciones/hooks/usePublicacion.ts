@@ -1,18 +1,11 @@
-import { useQuery } from "@tanstack/react-query";
+// src/features/publicaciones/hooks/usePublicaciones.ts
+import { useQuery } from '@tanstack/react-query';
+import { publicacionesApi } from '../services/publicacionesApi';
 
-import { api } from "@/lib/api";
-
-import type { Publicacion } from "../types";
-
-async function fetchPublicacion(slug: string): Promise<Publicacion> {
-  const { data } = await api.get<Publicacion>(`/publicaciones/${slug}/`);
-  return data;
-}
-
-export function usePublicacion(slug: string) {
+export function usePublicaciones(filtros?: { categoria?: string }) {
   return useQuery({
-    queryKey: ["publicacion", slug],
-    queryFn: () => fetchPublicacion(slug),
-    enabled: Boolean(slug),
+    queryKey: ['publicaciones', filtros],
+    queryFn: () => publicacionesApi.obtenerTodas(filtros),
+    staleTime: 1000 * 60 * 5,
   });
 }

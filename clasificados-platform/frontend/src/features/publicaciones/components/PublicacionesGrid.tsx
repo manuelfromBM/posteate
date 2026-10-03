@@ -1,23 +1,23 @@
-import type { PublicacionRecienteMock } from "../mocks";
-import { PublicacionCard } from "./PublicacionCard";
+import { Publicacion } from "../types";
+import { PublicacionCard } from "./card/PublicacionCard";
 import styles from "./PublicacionesGrid.module.css";
 
-export function PublicacionesGrid({
-  publicaciones,
-}: {
-  publicaciones: PublicacionRecienteMock[];
-}) {
-  if (publicaciones.length === 0) {
-    return <p>No hay publicaciones para mostrar.</p>;
+interface PublicacionesGridProps {
+  publicaciones: Publicacion[];
+}
+
+export function PublicacionesGrid({ publicaciones }: PublicacionesGridProps) {
+  // 🛡️ Si no es un array o viene vacío, muestra el mensaje amigable en vez de romperse
+  if (!publicaciones || !Array.isArray(publicaciones) || publicaciones.length === 0) {
+    return <p className="text-center p-4 text-gray-500">No hay publicaciones para mostrar en este momento.</p>;
   }
 
   return (
     <div className={styles.grid}>
-      {publicaciones.map(({ publicacion, categoriaSlug }) => (
+      {publicaciones.map((publicacion) => (
         <PublicacionCard
           key={publicacion.id}
           publicacion={publicacion}
-          categoriaSlug={categoriaSlug}
         />
       ))}
     </div>

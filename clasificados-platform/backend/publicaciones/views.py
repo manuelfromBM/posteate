@@ -19,8 +19,9 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
 class PublicacionViewSet(viewsets.ModelViewSet):
     queryset = Publicacion.objects.select_related(
-        "categoria", "subcategoria", "ubicacion", "usuario"
+        "categoria", "subcategoria", "comuna", "usuario"
     ).prefetch_related("imagenes")
+    
     serializer_class = PublicacionSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     filterset_class = PublicacionFilter
@@ -29,8 +30,6 @@ class PublicacionViewSet(viewsets.ModelViewSet):
     lookup_field = "slug"
 
     def perform_create(self, serializer) -> None:
-        # Deliberate type error to verify pyright catches it
-        titulo: int = self.request.user.username
         serializer.save(usuario=self.request.user)
 
 
@@ -39,4 +38,3 @@ class ImagenPublicacionViewSet(viewsets.ModelViewSet):
     serializer_class = ImagenPublicacionSerializer
     permission_classes = [permissions.IsAuthenticated]
     filterset_fields = ["publicacion"]
-

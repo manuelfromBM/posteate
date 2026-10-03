@@ -1,44 +1,68 @@
 from django.conf import settings
 from django.db import models
 from django.utils.text import slugify
+from typing import TYPE_CHECKING, Optional, Any
+
+if TYPE_CHECKING:
+    from categorias.models import Categoria, Subcategoria  
+    from ubicaciones.models import Comuna, Sector
 
 
 class EstadoPublicacion(models.TextChoices):
-    DISPONIBLE = "disponible", "Disponible"
-    VENDIDO = "vendido", "Vendido"
-    ARRENDADO = "arrendado", "Arrendado"
-    FINALIZADO = "finalizado", "Finalizado"
+    ACTIVO = "activo", "Activo / Vigente"
+    PAUSADO = "pausado", "Pausado"
+    RESUELTO = "resuelto", "Resuelto / Terminado"
+    EXPIRADO = "expirado", "Expirado"
 
 
 class Publicacion(models.Model):
     titulo = models.CharField(max_length=200)
     slug = models.SlugField(max_length=220, unique=True, blank=True)
     descripcion = models.TextField()
-    categoria = models.ForeignKey(
+    
+    categoria: models.ForeignKey["Categoria"] = models.ForeignKey(
         "categorias.Categoria", on_delete=models.PROTECT, related_name="publicaciones"
     )
-    subcategoria = models.ForeignKey(
+    subcategoria: models.ForeignKey[Optional["Subcategoria"]] = models.ForeignKey(
         "categorias.Subcategoria",
         on_delete=models.PROTECT,
         related_name="publicaciones",
         null=True,
         blank=True,
     )
-    precio = models.DecimalField(max_digits=12, decimal_places=2, null=True, blank=True)
+    
+    precio = models.DecimalField(max_digits=12, decimal_places=0, null=True, blank=True)
+    recompensa = models.DecimalField(max_digits=10, decimal_places=0, null=True, blank=True)
+    
     estado = models.CharField(
         max_length=20,
         choices=EstadoPublicacion.choices,
-        default=EstadoPublicacion.DISPONIBLE,
+        default=EstadoPublicacion.ACTIVO,
     )
-    ubicacion = models.ForeignKey(
-        "ubicaciones.Comuna", on_delete=models.PROTECT, related_name="publicaciones"
+    
+    # 1. Comuna ahora es obligatoria (para búsquedas generales)
+    comuna: models.ForeignKey["Comuna"] = models.ForeignKey(
+        "ubicaciones.Comuna", 
+        on_delete=models.PROTECT, 
+        related_name="publicaciones"
     )
-    usuario = models.ForeignKey(
+    
+    # 2. Sector pasa a ser Opcional. 
+    sector: models.ForeignKey[Optional["Sector"]] = models.ForeignKey(
+        "ubicaciones.Sector", 
+        on_delete=models.PROTECT, 
+        related_name="publicaciones",
+        null=True,
+        blank=True
+    )
+    
+    usuario: models.ForeignKey[Any] = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="publicaciones"
     )
+    
     fecha_publicacion = models.DateTimeField(auto_now_add=True)
     fecha_expiracion = models.DateTimeField(null=True, blank=True)
-    contacto = models.CharField(max_length=100)
+    contacto = models.CharField(max_length=100, blank=True, null=True)
 
     class Meta:
         verbose_name = "Publicación"
@@ -48,7 +72,7 @@ class Publicacion(models.Model):
     def __str__(self) -> str:
         return self.titulo
 
-    def save(self, *args, **kwargs) -> None:
+    def save(self, *args: Any, **kwargs: Any) -> None:
         if not self.slug:
             base_slug = slugify(self.titulo)[:200]
             slug = base_slug
@@ -61,7 +85,7 @@ class Publicacion(models.Model):
 
 
 class ImagenPublicacion(models.Model):
-    publicacion = models.ForeignKey(
+    publicacion: models.ForeignKey[Publicacion] = models.ForeignKey(
         Publicacion, on_delete=models.CASCADE, related_name="imagenes"
     )
     imagen = models.ImageField(upload_to="publicaciones/")
