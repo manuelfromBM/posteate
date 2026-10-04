@@ -13,7 +13,7 @@ encontrar por buscador, categorías, filtros, ordenamiento y ubicación geográf
 ## Estructura del monorepo
 
 ```
-clasificados-platform/
+posteate/
 ├── frontend/          # Next.js + TypeScript + Yarn
 ├── backend/            # Django REST Framework + uv + Pyright
 ├── docker-compose.yml  # Postgres local

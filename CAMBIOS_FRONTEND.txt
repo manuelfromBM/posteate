@@ -1,14 +1,14 @@
 CAMBIOS FRONTEND - POSTEATE
 Fecha: 2026-09-29
-Alcance: SOLO frontend (clasificados-platform/frontend). No se tocó nada en
-clasificados-platform/backend (0 archivos modificados ahi, verificado con
+Alcance: SOLO frontend (frontend/). No se tocó nada en
+backend/ (0 archivos modificados ahi, verificado con
 git status).
 
 ============================================================
 1. POR QUE SE HIZO ESTO
 ============================================================
 
-Se revisaron las pantallas del MVP (ver clasificados-platform/CLAUDE.md,
+Se revisaron las pantallas del MVP (ver CLAUDE.md,
 seccion 2) contra lo que ya existia en el frontend y faltaban:
 
 - Crear publicacion
@@ -126,7 +126,6 @@ src/features/moderacion/components/ReportesTable.tsx
 
 A) Revisar el codigo (sin correr nada)
 ---------------------------------------
-  cd clasificados-platform
   git status                     -> confirma que backend/ no aparece
   git diff -- frontend           -> diff completo de lo modificado
   git status --porcelain frontend | grep '^??'   -> lista de archivos
@@ -134,7 +133,7 @@ A) Revisar el codigo (sin correr nada)
 
 B) Probarlo corriendo el frontend
 ----------------------------------
-  cd clasificados-platform/frontend
+  cd frontend
   npm run dev
   Abrir http://localhost:3000
 
@@ -181,7 +180,7 @@ B) Probarlo corriendo el frontend
 
 C) Verificaciones automaticas que ya corri
 --------------------------------------------
-  cd clasificados-platform/frontend
+  cd frontend
   npx tsc --noEmit -p tsconfig.json     -> 0 errores
   npx eslint src --max-warnings=0       -> 0 errores, 0 warnings
   npx next build                        -> build de produccion OK,
@@ -207,7 +206,7 @@ C) Verificaciones automaticas que ya corri
 3. "Reportar publicacion" es 100% mock (vive en memoria del navegador,
    se pierde al recargar). El backend no tiene modelo Report todavia
    (dominio "Report" esta documentado en CLAUDE.md seccion 7 pero no
-   implementado en clasificados-platform/backend).
+   implementado en backend/).
 
 4. Nada de esto toco el backend. Cuando decidan implementar login real,
    estas pantallas deberian empezar a funcionar de punta a punta sin
