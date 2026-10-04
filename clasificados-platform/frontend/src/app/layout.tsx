@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 
+import { HeaderAuthActions } from "@/features/usuarios/components/HeaderAuthActions";
+
 import "./globals.css";
 import styles from "./layout.module.css";
 import { Providers } from "./providers";
@@ -40,12 +42,7 @@ export default function RootLayout({
                 <Link href="/buscar" className={styles.buscar}>
                   🔍 Buscar
                 </Link>
-                <Link href="/registro" className={styles.registro}>
-                  Crear cuenta
-                </Link>
-                <Link href="/login" className={styles.login}>
-                  Ingresar
-                </Link>
+                <HeaderAuthActions />
               </div>
             </div>
           </header>

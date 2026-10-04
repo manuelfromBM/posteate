@@ -1,0 +1,16 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--font-size-2xl);
+}
+
+.subtitle {
+  margin: -1rem 0 0;
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+}

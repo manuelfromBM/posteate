@@ -1,0 +1,215 @@
+CAMBIOS FRONTEND - POSTEATE
+Fecha: 2026-09-29
+Alcance: SOLO frontend (clasificados-platform/frontend). No se tocó nada en
+clasificados-platform/backend (0 archivos modificados ahi, verificado con
+git status).
+
+============================================================
+1. POR QUE SE HIZO ESTO
+============================================================
+
+Se revisaron las pantallas del MVP (ver clasificados-platform/CLAUDE.md,
+seccion 2) contra lo que ya existia en el frontend y faltaban:
+
+- Crear publicacion
+- Editar / eliminar publicacion propia
+- Cambiar estado de una publicacion propia
+- "Mis publicaciones" (panel del usuario)
+- Reportar una publicacion
+
+Problema encontrado antes de construir: el login NO es real todavia.
+features/usuarios/hooks/useLogin.ts solo hacia un setTimeout falso, y
+lib/api.ts no manda cookies ni token alguno. El backend SI exige usuario
+autenticado para crear/editar/eliminar publicaciones (permission_classes
+en publicaciones/views.py). Como pediste no tocar el backend, se te
+pregunto como resolver esto y elegiste:
+
+  "Auth simulada con localStorage" -> el login/registro guardan una sesion
+  falsa en el navegador (no valida contra el servidor). Las pantallas de
+  crear/editar/eliminar/cambiar estado quedan completas y conectadas a la
+  API real, pero esas llamadas de ESCRITURA van a fallar con 401/403
+  contra el backend real HASTA que exista un login real. Esto es
+  esperado, no es un bug.
+
+============================================================
+2. ARCHIVOS NUEVOS (creados)
+============================================================
+
+-- Sesion simulada (features/usuarios) --
+src/features/usuarios/authContext.ts
+src/features/usuarios/authStore.ts
+src/features/usuarios/hooks/useAuth.ts
+src/features/usuarios/components/AuthProvider.tsx
+src/features/usuarios/components/RequireAuth.tsx
+src/features/usuarios/components/HeaderAuthActions.tsx
+src/features/usuarios/components/HeaderAuthActions.module.css
+
+-- Publicaciones: hooks de escritura (features/publicaciones/hooks) --
+src/features/publicaciones/hooks/useCrearPublicacion.ts
+src/features/publicaciones/hooks/useActualizarPublicacion.ts
+src/features/publicaciones/hooks/useEliminarPublicacion.ts
+src/features/publicaciones/hooks/useCambiarEstadoPublicacion.ts
+src/features/publicaciones/hooks/useImagenesPublicacion.ts
+src/features/publicaciones/hooks/useMisPublicaciones.ts
+
+-- Publicaciones: componentes y utilidades --
+src/features/publicaciones/components/PublicacionForm.tsx
+src/features/publicaciones/components/PublicacionForm.module.css
+src/features/publicaciones/components/MisPublicacionItem.tsx
+src/features/publicaciones/components/MisPublicacionItem.module.css
+src/features/publicaciones/estadoLabels.ts
+src/features/publicaciones/formatPrecio.ts   (antes vivia adentro de
+                                               PublicacionCard.tsx, se
+                                               extrajo para reusarla)
+
+-- Moderacion / reportes (mock compartido, no hay backend de Report) --
+src/features/moderacion/store.ts
+src/features/moderacion/motivoLabels.ts       (antes vivia adentro de
+                                                ReportesTable.tsx)
+src/features/moderacion/hooks/useReportarPublicacion.ts
+src/features/moderacion/components/ReportarPublicacionForm.tsx
+src/features/moderacion/components/ReportarPublicacionForm.module.css
+
+-- Paginas nuevas (app/) --
+src/app/publicaciones/nueva/page.tsx
+src/app/publicaciones/nueva/page.module.css
+src/app/publicaciones/[categoria]/[slug]/editar/page.tsx
+src/app/publicaciones/[categoria]/[slug]/editar/page.module.css
+src/app/publicaciones/[categoria]/[slug]/page.module.css  (la pagina de
+                                                            detalle no
+                                                            tenia css)
+src/app/mis-publicaciones/page.tsx
+src/app/mis-publicaciones/page.module.css
+
+============================================================
+3. ARCHIVOS MODIFICADOS
+============================================================
+
+src/app/providers.tsx
+  -> ahora envuelve la app en <AuthProvider>.
+
+src/app/layout.tsx
+  -> el header usa <HeaderAuthActions /> en vez de los links fijos
+     "Crear cuenta" / "Ingresar".
+
+src/app/layout.module.css
+  -> se eliminaron las clases .registro / .login que quedaron sin uso
+     (se movieron a HeaderAuthActions.module.css).
+
+src/app/publicaciones/[categoria]/[slug]/page.tsx  (pagina de detalle)
+  -> antes era un esqueleto sin estilos. Ahora muestra galeria de
+     imagenes, precio formateado, badge de estado, y:
+       - si sos el dueno: botones Editar / Cambiar estado / Eliminar
+       - si no sos el dueno (y estas logueado): boton "Reportar
+         publicacion"
+
+src/features/publicaciones/components/PublicacionCard.tsx
+  -> usa el formatPrecio compartido en vez de tener su propia copia.
+
+src/features/usuarios/hooks/useLogin.ts
+  -> en vez de solo simular un delay, ahora guarda la sesion simulada
+     (ver seccion 1).
+
+src/features/moderacion/hooks/useReportes.ts
+  -> antes tenia su propio useState con datos mock aislados. Ahora lee
+     del store compartido (features/moderacion/store.ts) para que los
+     reportes creados desde el detalle de una publicacion aparezcan en
+     /admin dentro de la misma sesion del navegador.
+
+src/features/moderacion/components/ReportesTable.tsx
+  -> usa el diccionario de motivos compartido (motivoLabels.ts) en vez
+     de tener uno propio duplicado.
+
+============================================================
+4. COMO REVISARLO VOS MISMO
+============================================================
+
+A) Revisar el codigo (sin correr nada)
+---------------------------------------
+  cd clasificados-platform
+  git status                     -> confirma que backend/ no aparece
+  git diff -- frontend           -> diff completo de lo modificado
+  git status --porcelain frontend | grep '^??'   -> lista de archivos
+                                                     nuevos
+
+B) Probarlo corriendo el frontend
+----------------------------------
+  cd clasificados-platform/frontend
+  npm run dev
+  Abrir http://localhost:3000
+
+  Flujos a probar:
+
+  1. Registro real:
+     /registro -> crea una cuenta. Esto SI pega al backend real
+     (POST /usuarios/). Si el backend no esta corriendo, va a fallar
+     ahi mismo (es esperado, es la unica parte que necesita backend
+     levantado ademas de la lectura de publicaciones/categorias).
+
+  2. Login simulado:
+     /login -> pone cualquier usuario/contrasena (no se valida contra
+     el servidor) y entra. El header debe cambiar a "Hola, <usuario>",
+     "+ Publicar", "Mis publicaciones", "Salir".
+
+  3. Crear publicacion:
+     Click en "+ Publicar" (o ir a /publicaciones/nueva). Llenar el
+     formulario y enviar.
+     - Si el backend esta corriendo pero sin login real: vas a ver un
+       mensaje de error explicando que la sesion es simulada y el
+       backend rechazo la escritura (401/403). Esto es el
+       comportamiento esperado, no un bug a arreglar.
+
+  4. Mis publicaciones:
+     /mis-publicaciones -> lista publicaciones cuyo "usuario_nombre"
+     coincide con tu sesion simulada, con acciones de cambiar estado,
+     editar y eliminar. Nota: solo mira la primera pagina de
+     resultados porque el backend no tiene filtro por usuario todavia
+     (ver limitacion en seccion 5).
+
+  5. Detalle de publicacion + reportar:
+     Entrar a cualquier publicacion (por ejemplo desde /buscar).
+     - Si sos el dueno (usuario_nombre coincide con tu sesion): vas a
+       ver Editar / selector de estado / Eliminar.
+     - Si no sos el dueno: boton "Reportar publicacion" -> completa
+       motivo y comentario -> enviar.
+
+  6. Verificar que el reporte llego al admin:
+     Ir a /admin -> el reporte que acabas de crear en el paso 5 deberia
+     aparecer en la tabla (estado "Pendiente"). Si recargas la pagina
+     completa del navegador, se pierde (vive solo en memoria de la
+     sesion, no hay backend de reportes).
+
+C) Verificaciones automaticas que ya corri
+--------------------------------------------
+  cd clasificados-platform/frontend
+  npx tsc --noEmit -p tsconfig.json     -> 0 errores
+  npx eslint src --max-warnings=0       -> 0 errores, 0 warnings
+  npx next build                        -> build de produccion OK,
+                                            se generaron todas las
+                                            rutas nuevas sin errores
+
+  Podes volver a correr estos 3 comandos vos mismo para confirmar.
+
+============================================================
+5. LIMITACIONES CONOCIDAS (a proposito, no son bugs)
+============================================================
+
+1. Crear/editar/eliminar/cambiar estado de publicaciones van a fallar
+   contra el backend real (401/403) porque no hay login real todavia.
+   El formulario ya detecta este caso y muestra un mensaje explicativo
+   en vez de un error generico.
+
+2. "Mis publicaciones" filtra en el cliente sobre la PRIMERA PAGINA de
+   resultados de /publicaciones/ (20 items, paginacion default de DRF),
+   porque el backend no expone un filtro ?usuario=. No es un listado
+   completo ni paginado de verdad.
+
+3. "Reportar publicacion" es 100% mock (vive en memoria del navegador,
+   se pierde al recargar). El backend no tiene modelo Report todavia
+   (dominio "Report" esta documentado en CLAUDE.md seccion 7 pero no
+   implementado en clasificados-platform/backend).
+
+4. Nada de esto toco el backend. Cuando decidan implementar login real,
+   estas pantallas deberian empezar a funcionar de punta a punta sin
+   cambios adicionales en el frontend (solo reemplazar
+   features/usuarios/authStore.ts / useLogin.ts por llamadas reales).

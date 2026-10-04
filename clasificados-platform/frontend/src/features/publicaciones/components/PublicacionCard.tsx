@@ -2,19 +2,9 @@ import Link from "next/link";
 
 import { formatFechaRelativa } from "@/lib/date";
 
+import { formatPrecio } from "../formatPrecio";
 import type { Publicacion } from "../types";
 import styles from "./PublicacionCard.module.css";
-
-function formatPrecio(precio: string | null): string | null {
-  if (!precio) return null;
-  const valor = Number(precio);
-  if (Number.isNaN(valor)) return null;
-  return valor.toLocaleString("es-CL", {
-    style: "currency",
-    currency: "CLP",
-    maximumFractionDigits: 0,
-  });
-}
 
 export function PublicacionCard({
   publicacion,

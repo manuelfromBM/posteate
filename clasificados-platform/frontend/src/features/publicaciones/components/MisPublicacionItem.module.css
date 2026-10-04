@@ -1,0 +1,77 @@
+.item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+}
+
+.info {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.titulo {
+  font-weight: 600;
+  color: inherit;
+  text-decoration: none;
+}
+
+.titulo:hover {
+  color: var(--color-primary);
+}
+
+.meta {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.estadoSelect {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  font-size: var(--font-size-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.acciones {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.accionBtn {
+  padding: 0.45rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.accionBtn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.accionBtnPeligro {
+  composes: accionBtn;
+  border-color: #fda29b;
+  color: #d92d20;
+}
+
+.accionBtnPeligro:hover {
+  border-color: #d92d20;
+  color: #d92d20;
+}
