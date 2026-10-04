@@ -1,25 +1,16 @@
 import Link from "next/link";
-import { formatFechaRelativa } from "@/lib/date";
-import type { Publicacion } from "../../types"; // Ajustada la ruta relativa hacia tus types
-import styles from "./PublicacionCard.module.css";
 
-// Formateador genérico para CLP (sin centavos)
-function  formatMoneda(valorTexto: string | null): string | null {
-  if (!valorTexto) return null;
-  const valor = Number(valorTexto);
-  if (Number.isNaN(valor)) return null;
-  return valor.toLocaleString("es-CL", {
-    style: "currency",
-    currency: "CLP",
-    maximumFractionDigits: 0,
-  });
-}
+import { colorPorCategoria } from "@/features/categorias/colors";
+import { CategoriaIcono } from "@/features/categorias/icons";
+import { formatFechaRelativa } from "@/lib/date";
+import { formatMoneda } from "@/lib/currency";
+
+import type { Publicacion } from "../../types";
+import styles from "./PublicacionCard.module.css";
 
 export function PublicacionCard({ publicacion }: { publicacion: Publicacion }) {
   const precioFormateado = formatMoneda(publicacion.precio);
   const recompensaFormateada = formatMoneda(publicacion.recompensa);
-
-  // 🌟 Usamos el slug real que viene de Django para armar la URL del enrutador dinámico
   const rutaCategoria = publicacion.categoria_slug || "general";
 
   return (
@@ -27,26 +18,34 @@ export function PublicacionCard({ publicacion }: { publicacion: Publicacion }) {
       href={`/publicaciones/${rutaCategoria}/${publicacion.slug}`}
       className={styles.card}
     >
-      <div className={styles.top}>
-        <span className={styles.categoria}>{publicacion.categoria_nombre}</span>
-        <span className={styles.fecha}>
+      <div
+        className={styles.thumb}
+        style={{ background: colorPorCategoria(publicacion.categoria_slug) }}
+      >
+        <CategoriaIcono nombre={publicacion.categoria_icono} size={28} />
+        <span className={styles.badge}>{publicacion.categoria_nombre}</span>
+        <span className={styles.vigencia}>
           {formatFechaRelativa(publicacion.fecha_publicacion)}
         </span>
       </div>
-      
-      <h3 className={styles.titulo}>{publicacion.titulo}</h3>
-      <p className={styles.descripcion}>{publicacion.descripcion}</p>
-      
-      <div className={styles.footer}>
-        <span className={styles.ubicacion}>📍 {publicacion.ubicacion_nombre}</span>
-        
-        {/* Muestra precio si existe (Arriendos, Compra/Venta) */}
-        {precioFormateado && <span className={styles.precio}>{precioFormateado}</span>}
-        
-        {/* Muestra recompensa si existe (Mascotas Perdidas) */}
+
+      <div className={styles.body}>
+        <h3 className={styles.titulo}>{publicacion.titulo}</h3>
+
+        <div className={styles.meta}>
+          {precioFormateado ? (
+            <span className={styles.precio}>{precioFormateado}</span>
+          ) : (
+            <span className={styles.precioNa}>Consultar</span>
+          )}
+          <span className={styles.ubicacion}>{publicacion.ubicacion_nombre}</span>
+        </div>
+
         {recompensaFormateada && (
-          <span className={styles.recompensa}>💰 Recompensa: {recompensaFormateada}</span>
+          <p className={styles.recompensa}>💰 Recompensa: {recompensaFormateada}</p>
         )}
+
+        <p className={styles.descripcion}>{publicacion.descripcion}</p>
       </div>
     </Link>
   );

@@ -2,18 +2,7 @@
 
 import { use } from "react";
 import { usePublicacion } from "@/features/publicaciones/hooks/usePublicacion";
-
-// Formateador dinámico para CLP chileno
-function formatMoneda(valorTexto: string | null): string | null {
-  if (!valorTexto) return null;
-  const valor = Number(valorTexto);
-  if (Number.isNaN(valor)) return null;
-  return valor.toLocaleString("es-CL", {
-    style: "currency",
-    currency: "CLP",
-    maximumFractionDigits: 0,
-  });
-}
+import { formatMoneda } from "@/lib/currency";
 
 export default function PublicacionDetallePage({
   params,

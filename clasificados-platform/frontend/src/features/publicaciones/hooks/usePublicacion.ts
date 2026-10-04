@@ -1,11 +1,11 @@
-// src/features/publicaciones/hooks/usePublicaciones.ts
+// src/features/publicaciones/hooks/usePublicacion.ts
 import { useQuery } from '@tanstack/react-query';
 import { publicacionesApi } from '../services/publicacionesApi';
 
-export function usePublicaciones(filtros?: { categoria?: string }) {
+export function usePublicacion(slug: string) {
   return useQuery({
-    queryKey: ['publicaciones', filtros],
-    queryFn: () => publicacionesApi.obtenerTodas(filtros),
+    queryKey: ['publicacion', slug],
+    queryFn: () => publicacionesApi.obtenerPorSlug(slug),
     staleTime: 1000 * 60 * 5,
   });
 }

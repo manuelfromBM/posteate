@@ -13,6 +13,7 @@ class PublicacionSerializer(serializers.ModelSerializer):
     imagenes = ImagenPublicacionSerializer(many=True, read_only=True)
     categoria_nombre = serializers.CharField(source="categoria.nombre", read_only=True)
     categoria_slug = serializers.CharField(source="categoria.slug", read_only=True)
+    categoria_icono = serializers.CharField(source="categoria.icono", read_only=True)
     subcategoria_nombre = serializers.CharField(
         source="subcategoria.nombre", read_only=True, default=None
     )
@@ -31,6 +32,7 @@ class PublicacionSerializer(serializers.ModelSerializer):
             "categoria",
             "categoria_nombre",
             "categoria_slug",
+            "categoria_icono",
             "subcategoria",
             "subcategoria_nombre",
             "precio",

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 
+import { BuscadorHeader } from "@/features/publicaciones/components/BuscadorHeader";
+
 import "./globals.css";
 import styles from "./layout.module.css";
 import { Providers } from "./providers";
@@ -33,14 +35,23 @@ export default function RootLayout({
           <header className={styles.header}>
             <div className={styles.headerInner}>
               <Link href="/" className={styles.logo}>
-                Posteate
+                <span className={styles.logoMark}>P</span>
+                <span className={styles.logoText}>Posteate</span>
               </Link>
-              <div className={styles.headerRight}>
-                <span className={styles.ubicacion}>📍 Melipilla, Chile</span>
-                <Link href="/login" className={styles.login}>
+
+              <BuscadorHeader />
+
+              <nav className={styles.nav}>
+                <Link href="/" className={styles.navLinkActive}>
+                  Feed
+                </Link>
+                <span className={styles.navLinkDisabled} title="Próxima iteración">
+                  Publicar
+                </span>
+                <Link href="/login" className={styles.navLink}>
                   Ingresar
                 </Link>
-              </div>
+              </nav>
             </div>
           </header>
           <main className={styles.main}>{children}</main>

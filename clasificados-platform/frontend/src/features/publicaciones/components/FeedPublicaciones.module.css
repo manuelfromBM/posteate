@@ -1,0 +1,39 @@
+.layout {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 1.75rem;
+  align-items: start;
+}
+
+.feedHead {
+  margin-bottom: 1.1rem;
+}
+
+.feedHead h1 {
+  font-size: var(--font-size-xl);
+  margin: 0 0 0.25rem;
+}
+
+.resultados {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  margin: 0;
+}
+
+.estado {
+  color: var(--color-text-muted);
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.estadoError {
+  color: #c0392b;
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+@media (max-width: 860px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+}

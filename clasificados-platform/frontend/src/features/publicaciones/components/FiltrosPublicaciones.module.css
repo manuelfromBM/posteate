@@ -1,0 +1,90 @@
+.filtros {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.1rem;
+  position: sticky;
+  top: 84px;
+}
+
+.cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.cabecera h2 {
+  font-size: var(--font-size-sm);
+  margin: 0;
+}
+
+.limpiar {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0;
+}
+
+.grupo {
+  margin-bottom: 1.25rem;
+}
+
+.grupo h3 {
+  font-size: var(--font-size-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  margin: 0 0 0.6rem;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.chip {
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  border-radius: 999px;
+  padding: 0.35rem 0.75rem;
+  font-size: var(--font-size-sm);
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--color-text);
+}
+
+.chip:hover {
+  border-color: var(--color-primary);
+}
+
+.chipSeleccionado {
+  background: var(--color-primary-soft);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.select {
+  width: 100%;
+  padding: 0.55rem 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface);
+  font-size: var(--font-size-sm);
+  color: var(--color-text);
+}
+
+@media (max-width: 860px) {
+  .filtros {
+    position: static;
+  }
+}

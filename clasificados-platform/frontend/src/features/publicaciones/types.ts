@@ -18,14 +18,15 @@ export interface Publicacion {
   descripcion: string;
   categoria: number;
   categoria_nombre: string;
-  categoria_slug: string; 
+  categoria_slug: string;
+  categoria_icono: string;
   subcategoria: number | null;
   subcategoria_nombre: string | null;
   precio: string | null;
   recompensa: string | null;
   estado: EstadoPublicacion;
-  ubicacion: number;
-  ubicacion_nombre: string; 
+  comuna: number;
+  ubicacion_nombre: string;
   usuario: number;
   usuario_nombre: string;
   fecha_publicacion: string;
@@ -45,9 +46,11 @@ export interface PublicacionesFiltros {
   categoria?: string | number;
   subcategoria?: string | number;
   estado?: EstadoPublicacion;
-  ubicacion?: string | number;
+  comuna?: number;
+  sector?: number;
   q?: string;
   precio_min?: number;
   precio_max?: number;
+  ordering?: string;
   page?: number;
 }
