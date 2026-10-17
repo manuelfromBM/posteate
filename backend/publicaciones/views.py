@@ -1,6 +1,7 @@
 from typing import cast
 
 from rest_framework import permissions, viewsets
+from rest_framework.exceptions import PermissionDenied
 
 from usuarios.models import Usuario
 
@@ -38,3 +39,10 @@ class ImagenPublicacionViewSet(viewsets.ModelViewSet):
     serializer_class = ImagenPublicacionSerializer
     permission_classes = [permissions.IsAuthenticated]
     filterset_fields = ["publicacion"]
+
+    def perform_create(self, serializer) -> None:
+        publicacion = serializer.validated_data["publicacion"]
+        usuario = cast(Usuario, self.request.user)
+        if publicacion.usuario_id != usuario.pk:
+            raise PermissionDenied("No puedes agregar imágenes a una publicación que no es tuya.")
+        serializer.save()

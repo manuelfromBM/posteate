@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import Link from "next/link";
 
+import { AuthNav } from "@/features/usuarios/components/AuthNav";
 import { BuscadorHeader } from "@/features/publicaciones/components/BuscadorHeader";
 
 import "./globals.css";
@@ -45,12 +46,10 @@ export default function RootLayout({
                 <Link href="/" className={styles.navLinkActive}>
                   Feed
                 </Link>
-                <span className={styles.navLinkDisabled} title="Próxima iteración">
+                <Link href="/publicar" className={styles.navLink}>
                   Publicar
-                </span>
-                <Link href="/login" className={styles.navLink}>
-                  Ingresar
                 </Link>
+                <AuthNav />
               </nav>
             </div>
           </header>

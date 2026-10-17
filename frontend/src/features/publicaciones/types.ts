@@ -7,6 +7,7 @@ export enum EstadoPublicacion {
 
 export interface ImagenPublicacion {
   id: number;
+  publicacion: number;
   imagen: string;
   orden: number;
 }
@@ -27,6 +28,8 @@ export interface Publicacion {
   estado: EstadoPublicacion;
   comuna: number;
   ubicacion_nombre: string;
+  sector: number | null;
+  sector_nombre: string | null;
   usuario: number;
   usuario_nombre: string;
   fecha_publicacion: string;
@@ -40,6 +43,18 @@ export interface PublicacionesResponse {
   next: string | null;
   previous: string | null;
   results: Publicacion[];
+}
+
+export interface NuevaPublicacion {
+  titulo: string;
+  descripcion: string;
+  categoria: number;
+  subcategoria?: number | null;
+  precio?: number | null;
+  recompensa?: number | null;
+  comuna: number;
+  sector?: number | null;
+  contacto?: string;
 }
 
 export interface PublicacionesFiltros {

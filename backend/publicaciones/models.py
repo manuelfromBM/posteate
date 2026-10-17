@@ -1,10 +1,13 @@
+import uuid
+from pathlib import Path
+from typing import TYPE_CHECKING, Any, Optional
+
 from django.conf import settings
 from django.db import models
 from django.utils.text import slugify
-from typing import TYPE_CHECKING, Optional, Any
 
 if TYPE_CHECKING:
-    from categorias.models import Categoria, Subcategoria  
+    from categorias.models import Categoria, Subcategoria
     from ubicaciones.models import Comuna, Sector
 
 
@@ -84,11 +87,16 @@ class Publicacion(models.Model):
         super().save(*args, **kwargs)
 
 
+def ruta_imagen_publicacion(instance: "ImagenPublicacion", filename: str) -> str:
+    extension = Path(filename).suffix
+    return f"posteate/publicaciones/{instance.publicacion.pk}/{uuid.uuid4().hex}{extension}"
+
+
 class ImagenPublicacion(models.Model):
     publicacion: models.ForeignKey[Publicacion] = models.ForeignKey(
         Publicacion, on_delete=models.CASCADE, related_name="imagenes"
     )
-    imagen = models.ImageField(upload_to="publicaciones/")
+    imagen = models.ImageField(upload_to=ruta_imagen_publicacion)
     orden = models.PositiveIntegerField(default=0)
 
     class Meta:

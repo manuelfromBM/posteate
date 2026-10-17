@@ -6,7 +6,7 @@ from .models import ImagenPublicacion, Publicacion
 class ImagenPublicacionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ImagenPublicacion
-        fields = ["id", "imagen", "orden"]
+        fields = ["id", "publicacion", "imagen", "orden"]
 
 
 class PublicacionSerializer(serializers.ModelSerializer):
@@ -20,6 +20,7 @@ class PublicacionSerializer(serializers.ModelSerializer):
     
     # 🇨🇱 CORRECCIÓN 1: Cambiamos 'ubicacion.nombre' por 'comuna.nombre' (o 'sector.nombre')
     ubicacion_nombre = serializers.CharField(source="comuna.nombre", read_only=True)
+    sector_nombre = serializers.CharField(source="sector.nombre", read_only=True, default=None)
     usuario_nombre = serializers.CharField(source="usuario.username", read_only=True)
 
     class Meta:
@@ -38,8 +39,10 @@ class PublicacionSerializer(serializers.ModelSerializer):
             "precio",
             "recompensa",
             "estado",
-            "comuna", 
+            "comuna",
             "ubicacion_nombre",
+            "sector",
+            "sector_nombre",
             "usuario",
             "usuario_nombre",
             "fecha_publicacion",

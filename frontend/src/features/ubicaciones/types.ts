@@ -5,3 +5,11 @@ export interface Sector {
   comuna_nombre: string;
   slug: string;
 }
+
+export interface Comuna {
+  id: number;
+  nombre: string;
+  region: number;
+  region_nombre: string;
+  slug: string;
+}

@@ -25,7 +25,21 @@ export default function PublicacionDetallePage({
         <h1 style={{ fontSize: "2.5rem", fontWeight: "bold", margin: "0.5rem 0 1.5rem 0" }}>
           {publicacion.titulo}
         </h1>
-        
+
+        {publicacion.imagenes.length > 0 && (
+          <div style={{ display: "flex", gap: "0.75rem", overflowX: "auto", marginBottom: "1.5rem" }}>
+            {publicacion.imagenes.map((img) => (
+              // eslint-disable-next-line @next/next/no-img-element -- URL remota de Cloudinary, sin configurar remotePatterns todavia
+              <img
+                key={img.id}
+                src={img.imagen}
+                alt={publicacion.titulo}
+                style={{ height: "220px", borderRadius: "8px", objectFit: "cover", flexShrink: 0 }}
+              />
+            ))}
+          </div>
+        )}
+
         <p style={{ fontSize: "1.1rem", lineHeight: "1.6", color: "#2d3748", marginBottom: "2rem", whiteSpace: "pre-line" }}>
           {publicacion.descripcion}
         </p>

@@ -1,0 +1,23 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.titulo {
+  margin: 0;
+  font-size: var(--font-size-xl);
+}
+
+.estado {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 3rem 0;
+}
+
+.link {
+  color: var(--color-primary);
+  font-weight: 600;
+}
