@@ -6,16 +6,19 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "cloudinary>=1.46.3",
+    "dj-database-url>=3.1.2",
     "django>=6.0.7",
     "django-cloudinary-storage>=0.3.0",
     "django-cors-headers>=4.9.0",
     "django-extensions>=4.1",
     "django-filter>=25.2",
     "djangorestframework>=3.17.1",
+    "gunicorn>=26.2.0",
     "pillow>=12.3.0",
     "psycopg[binary]>=3.3.4",
     "pydot>=4.0.1",
     "python-decouple>=3.8",
+    "whitenoise>=6.12.0",
 ]
 
 [dependency-groups]

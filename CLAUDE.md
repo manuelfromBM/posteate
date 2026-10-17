@@ -268,7 +268,9 @@ Do not scatter `"Melipilla"` as a hard-coded domain assumption throughout the co
 
 Images are stored in object storage, not directly inside PostgreSQL.
 
-The concrete storage provider is currently TBD.
+Storage provider: Cloudinary. Organized by publication, not by user
+(`posteate/publicaciones/<publication_id>/...`), since images belong to a
+publication, not directly to a user — see `docs/technical/deployment.md`.
 
 ### Reports
 
@@ -515,16 +517,25 @@ Before declaring completion:
 
 ## 20. Important current TBD decisions
 
+Decided so far:
+
+- Object storage provider: Cloudinary.
+- Frontend hosting: Vercel.
+- Backend hosting: Render.
+- Pre-deploy checks: `backend/Makefile` (`make pre-deploy`). Full deployment
+  setup, env vars and the cross-site cookie rationale: `docs/technical/deployment.md`.
+
+Authentication is a minimal, explicitly provisional session-based bridge
+(`usuarios` app: `/auth/login/`, `/auth/logout/`, `/auth/csrf/`) built only to
+unblock the publish-form flow end to end — it is NOT a final decision, see
+section 8.
+
 The following remain intentionally undecided:
 
-- Authentication implementation.
-- Object storage provider.
-- Deployment provider.
-- Backend hosting provider.
-- CI/CD.
+- Final authentication architecture (the bridge above stays swappable).
+- CI/CD (checks currently run manually via `make pre-deploy`, not on push).
 - Exact testing libraries beyond Playwright for E2E.
 - API type-generation strategy.
-- Production infrastructure.
 - Advanced search strategy.
 - Exact publication expiration policy.
 - Anonymous publication policy.

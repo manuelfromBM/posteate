@@ -2,7 +2,7 @@
 from django.urls import include, path
 from rest_framework.routers import DefaultRouter
 
-from .views import PublicacionViewSet, ImagenPublicacionViewSet
+from .views import ImagenPublicacionViewSet, PublicacionViewSet
 
 # Creamos un router específico para este módulo
 router = DefaultRouter()

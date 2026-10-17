@@ -4,13 +4,28 @@ asgiref==3.12.1
     # via
     #   django
     #   django-cors-headers
+certifi==2026.7.22
+    # via
+    #   cloudinary
+    #   requests
+charset-normalizer==3.5.2
+    # via requests
+cloudinary==1.46.3
+    # via
+    #   backend (pyproject.toml)
+    #   django-cloudinary-storage
+dj-database-url==3.1.2
+    # via backend (pyproject.toml)
 django==6.1.1
     # via
     #   backend (pyproject.toml)
+    #   dj-database-url
     #   django-cors-headers
     #   django-extensions
     #   django-filter
     #   djangorestframework
+django-cloudinary-storage==0.3.0
+    # via backend (pyproject.toml)
 django-cors-headers==4.9.0
     # via backend (pyproject.toml)
 django-extensions==4.1
@@ -19,6 +34,10 @@ django-filter==26.2
     # via backend (pyproject.toml)
 djangorestframework==3.18.1
     # via backend (pyproject.toml)
+gunicorn==26.2.0
+    # via backend (pyproject.toml)
+idna==3.20
+    # via requests
 pillow==12.3.0
     # via backend (pyproject.toml)
 psycopg==3.3.6
@@ -31,9 +50,19 @@ pyparsing==3.3.3
     # via pydot
 python-decouple==3.8
     # via backend (pyproject.toml)
+requests==2.34.2
+    # via django-cloudinary-storage
+six==1.17.0
+    # via cloudinary
 sqlparse==0.6.0
     # via django
 tzdata==2026.5
     # via
     #   django
     #   psycopg
+urllib3==2.8.0
+    # via
+    #   cloudinary
+    #   requests
+whitenoise==6.12.0
+    # via backend (pyproject.toml)

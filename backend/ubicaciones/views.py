@@ -1,6 +1,7 @@
 from rest_framework import permissions, viewsets
-from .models import Region, Comuna, Sector
-from .serializers import RegionSerializer, ComunaSerializer, SectorSerializer
+
+from .models import Comuna, Region, Sector
+from .serializers import ComunaSerializer, RegionSerializer, SectorSerializer
 
 
 class RegionViewSet(viewsets.ModelViewSet):

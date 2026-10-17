@@ -1,5 +1,6 @@
 from django.db import models
 
+
 class Region(models.Model):
     nombre = models.CharField(max_length=100)  # Ej: "Región Metropolitana de Santiago"
     numero_romano = models.CharField(max_length=10, blank=True)  

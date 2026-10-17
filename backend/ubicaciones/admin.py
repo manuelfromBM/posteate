@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import Region, Comuna, Sector 
+
+from .models import Comuna, Region, Sector
+
 
 @admin.register(Region)
 class RegionAdmin(admin.ModelAdmin):

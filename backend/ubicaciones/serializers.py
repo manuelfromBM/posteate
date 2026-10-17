@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Region, Comuna, Sector
+
+from .models import Comuna, Region, Sector
 
 
 class RegionSerializer(serializers.ModelSerializer):

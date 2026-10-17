@@ -4,6 +4,7 @@ Django settings for core project.
 
 from pathlib import Path
 
+import dj_database_url
 from decouple import Csv, config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -42,6 +43,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "corsheaders.middleware.CorsMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -73,16 +75,25 @@ WSGI_APPLICATION = "core.wsgi.application"
 
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
+#
+# En local, seguimos usando DB_NAME/DB_USER/DB_PASSWORD/DB_HOST/DB_PORT (.env).
+# En Render, la variable DATABASE_URL la inyecta automaticamente al conectar
+# la base de datos al servicio y tiene prioridad sobre las variables sueltas.
+
+_DATABASE_URL_LOCAL = (
+    f"postgres://{config('DB_USER', default='dev')}:"
+    f"{config('DB_PASSWORD', default='dev')}@"
+    f"{config('DB_HOST', default='localhost')}:"
+    f"{config('DB_PORT', default='5432')}/"
+    f"{config('DB_NAME', default='clasificados')}"
+)
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": config("DB_NAME", default="clasificados"),
-        "USER": config("DB_USER", default="dev"),
-        "PASSWORD": config("DB_PASSWORD", default="dev"),
-        "HOST": config("DB_HOST", default="localhost"),
-        "PORT": config("DB_PORT", default="5432"),
-    }
+    "default": dj_database_url.config(
+        default=_DATABASE_URL_LOCAL,
+        conn_max_age=600,
+        ssl_require=config("DB_SSL_REQUIRE", default=False, cast=bool),
+    )
 }
 
 
@@ -143,7 +154,7 @@ STORAGES = {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
@@ -179,3 +190,28 @@ CSRF_TRUSTED_ORIGINS = config(
     default="http://localhost:3000",
     cast=Csv(),
 )
+
+# Seguridad para produccion (Render + Vercel sirven por HTTPS).
+# En local todo queda igual que antes (defaults = comportamiento actual).
+# En produccion, el panel de Render debe setear estas variables en True,
+# y SESSION_COOKIE_SAMESITE/CSRF_COOKIE_SAMESITE en "None" -- Vercel y
+# Render son dominios distintos de verdad (cross-site, no solo cross-origin
+# como localhost:3000/:8000), asi que las cookies necesitan SameSite=None
+# para que el navegador las mande en los fetch del frontend al backend.
+SECURE_SSL_REDIRECT = config("SECURE_SSL_REDIRECT", default=False, cast=bool)
+SECURE_HSTS_SECONDS = config("SECURE_HSTS_SECONDS", default=0, cast=int)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = config(
+    "SECURE_HSTS_INCLUDE_SUBDOMAINS", default=False, cast=bool
+)
+SECURE_HSTS_PRELOAD = config("SECURE_HSTS_PRELOAD", default=False, cast=bool)
+
+SESSION_COOKIE_SECURE = config("SESSION_COOKIE_SECURE", default=False, cast=bool)
+SESSION_COOKIE_SAMESITE = config("SESSION_COOKIE_SAMESITE", default="Lax")
+
+CSRF_COOKIE_SECURE = config("CSRF_COOKIE_SECURE", default=False, cast=bool)
+CSRF_COOKIE_SAMESITE = config("CSRF_COOKIE_SAMESITE", default="Lax")
+
+# Render esta detras de un proxy/load balancer que termina el HTTPS y nos
+# reenvia por HTTP interno -- sin esto, Django cree que todo request es HTTP
+# y SECURE_SSL_REDIRECT lo manda a un loop de redirects infinito.
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")

@@ -12,8 +12,8 @@ class Command(BaseCommand):
             Publicacion.objects.filter(
                 fecha_expiracion__lt=timezone.now(),
             )
-            .exclude(estado=EstadoPublicacion.FINALIZADO)
-            .update(estado=EstadoPublicacion.FINALIZADO)
+            .exclude(estado=EstadoPublicacion.EXPIRADO)
+            .update(estado=EstadoPublicacion.EXPIRADO)
         )
         self.stdout.write(
             self.style.SUCCESS(f"{actualizadas} publicación(es) marcada(s) como finalizada(s).")
